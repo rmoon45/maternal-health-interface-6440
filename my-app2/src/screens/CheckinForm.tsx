@@ -83,7 +83,7 @@ export default function CheckinForm() {
 
   const inputStyle =
     "w-full rounded-xl border border-rose-200 bg-white/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rose-300 px-4 py-3 text-sm text-gray-700 placeholder-gray-400 transition-all shadow-sm";
-  const labelStyle = "block text-sm font-semibold text-gray-700 mb-2";
+  // const labelStyle = "block text-sm font-semibold text-gray-700 mb-2";
   const hintStyle = "text-xs text-gray-400 mt-1";
 
   const yesNoBtn = (
