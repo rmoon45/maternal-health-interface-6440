@@ -1,37 +1,53 @@
-import { useState } from 'react';
-import Dashboard from './screens/Dashboard';
-import CheckInForm from './screens/CheckinForm';
+import { useState } from "react";
+import Dashboard from "./screens/Dashboard";
+import CheckInForm from "./screens/CheckinForm";
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'checkin'>('dashboard');
+  const [activeTab, setActiveTab] = useState<"dashboard" | "checkin">("dashboard");
 
   return (
-    <div className="min-h-screen text-slate-900 font-sans bg-white">
-      <header className="p-6 border-b-2 border-slate-800 max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold">Maternal Health Interface</h1>
-        <nav className="mt-6 flex gap-4">
-          <button 
-            className={`px-6 py-2 border-2 border-slate-800 transition-colors ${
-              activeTab === 'dashboard' ? 'bg-slate-800 text-white' : 'bg-transparent hover:bg-slate-100'
-            }`}
-            onClick={() => setActiveTab('dashboard')}
-          >
-            Dashboard
-          </button>
-          <button 
-            className={`px-6 py-2 border-2 border-slate-800 transition-colors ${
-              activeTab === 'checkin' ? 'bg-slate-800 text-white' : 'bg-transparent hover:bg-slate-100'
-            }`}
-            onClick={() => setActiveTab('checkin')}
-          >
-            Check-in Form
-          </button>
-        </nav>
-      </header>
+    <div className="min-h-screen pb-12" style={{ background: "linear-gradient(160deg, #fdf2f8 0%, #fce7f3 40%, #ede9fe 100%)", fontFamily: "'Lato', sans-serif" }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;600;700&display=swap');
+      `}</style>
+      
+      {/* Navigation Bar */}
+      <div className="bg-white backdrop-blur-sm border-b border-rose-100 sticky top-0 z-10">
+        <div className="max-w-5xl mx-auto px-5 py-4 flex flex-col sm:flex-row gap-4 items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-rose-800" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+              🌸 Maternal Health Companion
+            </h1>
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setActiveTab("dashboard")}
+              className={`px-5 py-2 rounded-full text-sm font-semibold transition-all ${
+                activeTab === "dashboard"
+                  ? "bg-rose-400 text-white shadow-md"
+                  : "bg-white/60 text-gray-600 hover:bg-white border border-rose-100"
+              }`}
+            >
+              Dashboard
+            </button>
+            <button
+              onClick={() => setActiveTab("checkin")}
+              className={`px-5 py-2 rounded-full text-sm font-semibold transition-all ${
+                activeTab === "checkin"
+                  ? "bg-rose-400 text-white shadow-md"
+                  : "bg-white/60 text-gray-600 hover:bg-white border border-rose-100"
+              }`}
+            >
+              Check-in Form
+            </button>
+          </div>
+        </div>
+      </div>
 
-      <main className="py-6">
-        {activeTab === 'dashboard' ? <Dashboard /> : <CheckInForm />}
-      </main>
+      {/* Main Content Area */}
+      <div className="max-w-5xl mx-auto px-4 mt-8">
+        {activeTab === "dashboard" ? <Dashboard /> : <CheckInForm />}
+      </div>
     </div>
   );
 }
