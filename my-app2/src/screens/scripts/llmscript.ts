@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-export const generateObservation = (form: String): any => {
+export const generateObservation = (form: String) => {
   const response = queryLLM("The patient is an expecting mother that is using a maternal health monitoring app. These are patient responses to a questionnaire. Using the responses, generate an Observation using the FHIR standard. Make sure the Observation is in a json format. Don't have any other words other than the json file." + form);
-  return response
+  return response;
 };
 
 

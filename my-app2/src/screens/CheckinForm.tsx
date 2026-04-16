@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { generateObservation } from "./scripts/llmscript.ts";
 
-
 interface FormData {
   weightValue: string;
   weightUnit: "lbs" | "kg";
@@ -62,8 +61,11 @@ export default function CheckinForm() {
 
   if (submitted) {
     console.log(form)
-    const result = generateObservation(JSON.stringify(form));
-    console.log(result);
+    const response = generateObservation(JSON.stringify(form));
+    response.then((result) => {
+      const observation = result;
+      console.log(observation);
+    })
     return (
       <div className="flex flex-col items-center justify-center py-20">
         <div className="text-7xl mb-6">🌷</div>
