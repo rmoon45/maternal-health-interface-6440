@@ -82,7 +82,10 @@ export default function CheckinForm({ onSubmitVitals }: CheckinFormProps) {
 
   if (submitted) {
     console.log(form);
-    newNode.node = generateSummary(JSON.stringify(form));
+    const summary = generateSummary(JSON.stringify(form));
+    summary.then((result) => {
+      newNode.node = result;
+    });
     const response = generateObservation(JSON.stringify(form));
     response.then((result) => {
       const observation = result;
