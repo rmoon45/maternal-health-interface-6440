@@ -180,11 +180,16 @@ export default function Dashboard({ vitalData }: DashboardProps) {
                     tick={{ fontSize: 12, fill: '#94a3b8' }}
                   />
                   <Tooltip
-                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                    formatter={(value: number | string | undefined) => [
-                      `${value ?? ''} ${vitalConfig[activeVital as Exclude<VitalKey, 'bp'>].unit}`,
-                      vitalConfig[activeVital as Exclude<VitalKey, 'bp'>].label,
-                    ]}
+                    content={({ active, payload, label }: any) => {
+                      if (!active || !payload?.length) return null;
+                      const cfg = vitalConfig[activeVital as Exclude<VitalKey, 'bp'>];
+                      return (
+                        <div style={{ borderRadius: '12px', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', background: '#fff', padding: '10px 14px', fontSize: 12 }}>
+                          <p style={{ marginBottom: 6, fontWeight: 600, color: '#64748b' }}>{label}</p>
+                          <p style={{ color: cfg.color, margin: '2px 0' }}>{cfg.label}: {payload[0].value} {cfg.unit}</p>
+                        </div>
+                      );
+                    }}
                   />
                   <Line
                     type="monotone"
