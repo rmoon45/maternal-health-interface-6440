@@ -181,8 +181,8 @@ export default function Dashboard({ vitalData }: DashboardProps) {
                   />
                   <Tooltip
                     contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                    formatter={(value: number) => [
-                      `${value} ${vitalConfig[activeVital as Exclude<VitalKey, 'bp'>].unit}`,
+                    formatter={(value: number | string | undefined) => [
+                      `${value ?? ''} ${vitalConfig[activeVital as Exclude<VitalKey, 'bp'>].unit}`,
                       vitalConfig[activeVital as Exclude<VitalKey, 'bp'>].label,
                     ]}
                   />
