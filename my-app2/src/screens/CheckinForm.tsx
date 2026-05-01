@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { generateObservation } from "./scripts/llmscript.ts";
+import type { VitalDataPoint } from "./Dashboard.tsx";
 
 interface FormData {
   weightValue: string;
@@ -37,13 +38,28 @@ const initialForm: FormData = {
 
 const swellingLocations = ["Hands", "Feet", "Face", "Ankles", "Legs"];
 
-export default function CheckinForm() {
+interface CheckinFormProps {
+  onSubmitVitals: (point: VitalDataPoint) => void;
+}
+
+export default function CheckinForm({ onSubmitVitals }: CheckinFormProps) {
   const [form, setForm] = useState<FormData>(initialForm);
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
+
+    // Build new vital data point from submitted values
+    const now = new Date();
+    const label = `${now.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+    const newPoint: VitalDataPoint = {
+      week: label,
+      ...(form.heartRate ? { hr: Number(form.heartRate) } : {}),
+      ...(form.systolic ? { systolic: Number(form.systolic) } : {}),
+      ...(form.diastolic ? { diastolic: Number(form.diastolic) } : {}),
+    };
+    onSubmitVitals(newPoint);
   };
 
   const setField = <K extends keyof FormData>(key: K, value: FormData[K]) => {
@@ -60,12 +76,12 @@ export default function CheckinForm() {
   };
 
   if (submitted) {
-    console.log(form)
+    console.log(form);
     const response = generateObservation(JSON.stringify(form));
     response.then((result) => {
       const observation = result;
       console.log(observation);
-    })
+    });
     return (
       <div className="flex flex-col items-center justify-center py-20">
         <div className="text-7xl mb-6">🌷</div>
@@ -90,7 +106,6 @@ export default function CheckinForm() {
 
   const inputStyle =
     "w-full rounded-xl border border-rose-200 bg-white/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rose-300 px-4 py-3 text-sm text-gray-700 placeholder-gray-400 transition-all shadow-sm";
-  // const labelStyle = "block text-sm font-semibold text-gray-700 mb-2";
   const hintStyle = "text-xs text-gray-400 mt-1";
 
   const yesNoBtn = (

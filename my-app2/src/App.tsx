@@ -1,16 +1,22 @@
 import { useState } from "react";
-import Dashboard from "./screens/Dashboard";
+import Dashboard, { defaultVitalData } from "./screens/Dashboard";
+import type { VitalDataPoint } from "./screens/Dashboard";
 import CheckInForm from "./screens/CheckinForm";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<"dashboard" | "checkin">("dashboard");
+  const [vitalData, setVitalData] = useState<VitalDataPoint[]>(defaultVitalData);
+
+  const handleSubmitVitals = (point: VitalDataPoint) => {
+    setVitalData((prev) => [...prev, point]);
+  };
 
   return (
     <div className="min-h-screen pb-12" style={{ background: "linear-gradient(160deg, #fdf2f8 0%, #fce7f3 40%, #ede9fe 100%)", fontFamily: "'Lato', sans-serif" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;600;700&display=swap');
       `}</style>
-      
+
       {/* Navigation Bar */}
       <div className="bg-white backdrop-blur-sm border-b border-rose-100 sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-5 py-4 flex flex-col sm:flex-row gap-4 items-center justify-between">
@@ -46,7 +52,10 @@ export default function App() {
 
       {/* Main Content Area */}
       <div className="max-w-5xl mx-auto px-4 mt-8">
-        {activeTab === "dashboard" ? <Dashboard /> : <CheckInForm />}
+        {activeTab === "dashboard"
+          ? <Dashboard vitalData={vitalData} />
+          : <CheckInForm onSubmitVitals={handleSubmitVitals} />
+        }
       </div>
     </div>
   );
