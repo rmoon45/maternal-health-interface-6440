@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { generateObservation } from "./scripts/llmscript.ts";
-import type { VitalDataPoint } from "./screens/Dashboard";
+import type { VitalDataPoint } from "./Dashboard.tsx";
 
 interface FormData {
   weightValue: string;

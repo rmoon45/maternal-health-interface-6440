@@ -84,12 +84,12 @@ export default function Dashboard({ vitalData }: DashboardProps) {
           </div>
 
           {/* Metric Tabs */}
-          <div className="flex flex-wrap gap-2 mb-6">
+          <div className="flex gap-1.5 mb-6 overflow-x-auto pb-1">
             {(Object.keys(vitalConfig) as Exclude<VitalKey, 'bp'>[]).map((key) => (
               <button
                 key={key}
                 onClick={() => setActiveVital(key)}
-                className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
+                className={`px-2.5 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap flex-shrink-0 ${
                   activeVital === key
                     ? "bg-gray-800 text-white shadow-md"
                     : "bg-white text-gray-500 border border-gray-200 hover:bg-gray-50"
@@ -101,7 +101,7 @@ export default function Dashboard({ vitalData }: DashboardProps) {
             {/* Blood Pressure Tab */}
             <button
               onClick={() => setActiveVital('bp')}
-              className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
+              className={`px-2.5 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap flex-shrink-0 ${
                 activeVital === 'bp'
                   ? "bg-gray-800 text-white shadow-md"
                   : "bg-white text-gray-500 border border-gray-200 hover:bg-gray-50"
@@ -131,16 +131,23 @@ export default function Dashboard({ vitalData }: DashboardProps) {
                     tick={{ fontSize: 12, fill: '#94a3b8' }}
                   />
                   <Tooltip
-                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                    formatter={(value: number, name: string) => [
-                      `${value} ${bpConfig.unit}`,
-                      name === 'systolic' ? 'Systolic' : 'Diastolic',
-                    ]}
+                    content={({ active, payload, label }: any) => {
+                      if (!active || !payload) return null;
+                      const sys = payload.find((p: any) => p.dataKey === 'systolic');
+                      const dia = payload.find((p: any) => p.dataKey === 'diastolic');
+                      return (
+                        <div style={{ borderRadius: '12px', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', background: '#fff', padding: '10px 14px', fontSize: 12 }}>
+                          <p style={{ marginBottom: 6, fontWeight: 600, color: '#64748b' }}>{label}</p>
+                          {sys && <p style={{ color: bpConfig.systolicColor, margin: '2px 0' }}>Systolic: {sys.value} mmHg</p>}
+                          {dia && <p style={{ color: bpConfig.diastolicColor, margin: '2px 0' }}>Diastolic: {dia.value} mmHg</p>}
+                        </div>
+                      );
+                    }}
                   />
                   <Line
                     type="monotone"
-                    dataKey="systolic"
-                    stroke={bpConfig.systolicColor}
+                    dataKey="diastolic"
+                    stroke={bpConfig.diastolicColor}
                     strokeWidth={3}
                     dot={{ r: 4, strokeWidth: 2, fill: '#fff' }}
                     activeDot={{ r: 6, strokeWidth: 0 }}
@@ -148,8 +155,8 @@ export default function Dashboard({ vitalData }: DashboardProps) {
                   />
                   <Line
                     type="monotone"
-                    dataKey="diastolic"
-                    stroke={bpConfig.diastolicColor}
+                    dataKey="systolic"
+                    stroke={bpConfig.systolicColor}
                     strokeWidth={3}
                     dot={{ r: 4, strokeWidth: 2, fill: '#fff' }}
                     activeDot={{ r: 6, strokeWidth: 0 }}
