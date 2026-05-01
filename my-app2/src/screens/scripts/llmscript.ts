@@ -1,5 +1,11 @@
 import axios from 'axios';
 
+
+export const generateSummary = (form: String) => {
+  const response = queryLLM("The patient is an expecting mother that is using a maternal health monitoring app. These are patient responses to a questionnaire. Using the responses, generate a 1-3 word summary of the most important symptoms that were reported." + form);
+  return response;
+};
+
 export const generateObservation = (form: String) => {
   const response = queryLLM("The patient is an expecting mother that is using a maternal health monitoring app. These are patient responses to a questionnaire. Using the responses, generate an Observation using the FHIR standard. Make sure the Observation is in a json format. Don't have any other words other than the json file." + form);
   return response;
@@ -19,7 +25,7 @@ const queryLLM = async (prompt: string) => {
       },
       {
         headers: {
-          "Authorization": `Bearer ${'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'}`,
+          "Authorization": `Bearer ${'API-KEY'}`,
           "Content-Type": "application/json",
         },
       }
