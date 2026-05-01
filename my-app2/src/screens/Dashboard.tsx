@@ -24,6 +24,11 @@ export const defaultVitalData: VitalDataPoint[] = [
   { week: 'Wk 40', hr: 83, hrv: 34, temp: 98.1, rr: 16.5, systolic: 130, diastolic: 84 },
 ];
 
+
+export const defaultTimeline = ["Doctor Visit 1", "Vaginal bleeding", "Doctor Visit 2", "Baby movement", "Doctor Visit 3"];
+export const newNode = {node: ""}
+
+
 type VitalKey = 'hr' | 'hrv' | 'temp' | 'rr' | 'bp';
 
 interface DashboardProps {
@@ -231,12 +236,14 @@ export default function Dashboard({ vitalData }: DashboardProps) {
         <div className="relative pt-4 pb-8 px-4">
           <div className="absolute left-0 right-0 h-1 bg-rose-100 rounded-full top-1/2 -translate-y-1/2" />
           <div className="relative flex justify-between items-center z-10">
-            {[1, 2, 3, 4, 5, 6, 7].map((node, i) => (
+            {defaultTimeline.concat(newNode.node).map((node, i) => (
               <div key={i} className="flex flex-col items-center gap-2">
-                <div className={`w-4 h-4 rounded-full border-4 border-white shadow-sm ${i < 3 ? 'bg-rose-400' : 'bg-rose-200'}`} />
-                <span className="text-xs text-gray-400 font-medium">Visit {node}</span>
+                <div className={`w-4 h-4 rounded-full border-4 border-white shadow-sm ${'bg-rose-400'}`} />
+                <span className="text-xs text-gray-400 font-medium">{node}</span>
               </div>
             ))}
+
+            
           </div>
         </div>
       </div>

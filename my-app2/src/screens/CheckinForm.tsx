@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { generateObservation } from "./scripts/llmscript.ts";
+import { generateObservation, generateSummary } from "./scripts/llmscript.ts";
 import type { VitalDataPoint } from "./Dashboard.tsx";
+import { newNode } from "./Dashboard.tsx";
+
 
 interface FormData {
   weightValue: string;
@@ -17,6 +19,7 @@ interface FormData {
   bleeding: "yes" | "no" | "";
   bleedingDescription: string;
   babyMovement: "yes" | "no" | "na" | "";
+  extra: string;
 }
 
 const initialForm: FormData = {
@@ -34,6 +37,7 @@ const initialForm: FormData = {
   bleeding: "",
   bleedingDescription: "",
   babyMovement: "",
+  extra: ""
 };
 
 const swellingLocations = ["Hands", "Feet", "Face", "Ankles", "Legs"];
@@ -62,6 +66,7 @@ export default function CheckinForm({ onSubmitVitals }: CheckinFormProps) {
     onSubmitVitals(newPoint);
   };
 
+
   const setField = <K extends keyof FormData>(key: K, value: FormData[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
@@ -77,6 +82,7 @@ export default function CheckinForm({ onSubmitVitals }: CheckinFormProps) {
 
   if (submitted) {
     console.log(form);
+    newNode.node = generateSummary(JSON.stringify(form));
     const response = generateObservation(JSON.stringify(form));
     response.then((result) => {
       const observation = result;
@@ -385,6 +391,20 @@ export default function CheckinForm({ onSubmitVitals }: CheckinFormProps) {
                 })}
               </div>
             </div>
+
+            {/* Extra Symptoms */}
+            <div>
+              {questionLabel("📝", "Are you experiencing any other symptoms?")}
+              <input
+                type="string"
+                placeholder="Type your response"
+                value={form.extra}
+                onChange={(e) => setField("extra", e.target.value)}
+                className={inputStyle}
+              />
+            </div>
+
+            
           </>
         )}
 
