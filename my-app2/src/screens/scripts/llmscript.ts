@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+const API_KEY = 'API_KEY';
 
 export const generateSummary = (form: String) => {
   const response = queryLLM("The patient is an expecting mother that is using a maternal health monitoring app. These are patient responses to a questionnaire. Using the responses, generate a 1-3 word summary of the most important symptoms that were reported." + form);
@@ -25,7 +26,7 @@ const queryLLM = async (prompt: string) => {
       },
       {
         headers: {
-          "Authorization": `Bearer ${'API-KEY'}`,
+          "Authorization": `Bearer ${API-KEY}`,
           "Content-Type": "application/json",
         },
       }
